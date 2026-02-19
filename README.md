@@ -63,7 +63,6 @@ promptpilot/
 │   ├── main.js             # Tauri invoke calls, toast system, prompt library
 │   └── assets/brand.html   # Animated splash screen
 ├── src-tauri/src/          # Rust backend
-│   ├── admin.rs            # Ed25519 nonce challenge & consent
 │   ├── users.rs            # Profile creation, keypair management
 │   ├── logs.rs             # Hash-chained SQLite audit log
 │   ├── ui.rs               # Answer style (persisted to SQLite)
