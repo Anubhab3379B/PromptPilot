@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptPilot — Next Problem?</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── Sidebar ───────────────────────── -->
+  <aside id="sidebar">
+    <div id="sidebar-header">
+      <div class="logo-row">
+        <div class="logo-icon">🧭</div>
+        <div>
+          <div class="logo-text">PromptPilot</div>
+          <div class="logo-sub">by Next Problem?</div>
+        </div>
+      </div>
+    </div>
+
+    <nav id="nav">
+      <div class="nav-item active" data-panel="prompts">
+        <span class="nav-icon">💡</span> Prompts
+      </div>
+      <div class="nav-item" data-panel="profiles">
+        <span class="nav-icon">👤</span> Profiles
+      </div>
+      <div class="nav-item" data-panel="admin">
+        <span class="nav-icon">🔐</span> Admin
+      </div>
+      <div class="nav-item" data-panel="consent">
+        <span class="nav-icon">🤝</span> Consent
+      </div>
+      <div class="nav-item" data-panel="logs">
+        <span class="nav-icon">📋</span> Audit Log
+      </div>
+      <div class="nav-item" data-panel="settings">
+        <span class="nav-icon">⚙️</span> Settings
+      </div>
+    </nav>
+
+    <div id="sidebar-footer">
+      <span class="version-badge">v1.1.0</span>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────── -->
+  <div id="main">
+    <div id="topbar">
+      <h2 id="topbar-title">💡 Prompt Library</h2>
+      <div class="topbar-right">
+        <div class="status-dot" title="App running"></div>
+      </div>
+    </div>
+
+    <div id="content">
+
+      <!-- ── PROMPTS panel ──────────────── -->
+      <div class="panel active" id="panel-prompts">
+        <div class="card">
+          <div class="card-title"><span>💡</span> Browse Prompt Templates</div>
+          <div class="prompt-cats" id="cat-pills"></div>
+          <div class="prompt-list" id="prompt-list"></div>
+        </div>
+        <div class="card" id="prompt-detail-card" style="display:none">
+          <div class="card-title"><span>📝</span> Prompt Detail</div>
+          <div class="form-row" style="margin-bottom:12px">
+            <div>
+              <div class="field">
+                <label>Title</label>
+                <input id="prompt-detail-title" readonly/>
+              </div>
+            </div>
+            <div>
+              <div class="field">
+                <label>Style</label>
+                <input id="prompt-detail-style" readonly/>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Prompt Body</label>
+            <textarea id="prompt-detail-body" rows="6" readonly></textarea>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button class="btn-primary" id="copy-prompt-btn">📋 Copy Prompt</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROFILES panel ─────────────── -->
+      <div class="panel" id="panel-profiles">
+        <div class="card">
+          <div class="card-title"><span>✨</span> Create New Profile</div>
+          <div class="form-row-3">
+            <div class="field"><label>User ID</label><input id="uid" placeholder="e.g. alice"/></div>
+            <div class="field"><label>Display Name</label><input id="name" placeholder="Alice Smith"/></div>
+            <div class="field"><label>Passphrase</label><input id="pw" type="password" placeholder="••••••••"/></div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn-primary" id="create_profile">✨ Create Profile</button>
+          </div>
+          <div id="create_out" class="output-box" style="margin-top:14px;display:none"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>👥</span> Existing Profiles</div>
+          <div class="profile-grid" id="profile-grid">
+            <div style="color:var(--text-muted);font-size:13px">No profiles yet. Create one above!</div>
+          </div>
+          <div style="margin-top:14px">
+            <button id="refresh-profiles" class="btn-sm">🔄 Refresh</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ADMIN panel ────────────────── -->
+      <div class="panel" id="panel-admin">
+        <div class="card">
+          <div class="card-title"><span>🔐</span> Admin Authentication</div>
+          <div id="admin-status-banner" class="admin-locked">
+            🔒 &nbsp;Admin mode is <strong>locked</strong>. Sign a nonce with your admin private key to unlock.
+          </div>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <button id="admin_nonce">🎲 Get Nonce</button>
+            <button id="admin_status">🔍 Check Status</button>
+          </div>
+          <div class="field" style="margin-top:14px">
+            <label>Nonce (copy this → sign with your admin Ed25519 key)</label>
+            <div class="output-box" id="nonce-display">
+              <span class="output-empty">Click "Get Nonce" to generate…</span>
+              <button class="output-copy" id="copy-nonce-btn" style="display:none">Copy</button>
+            </div>
+          </div>
+          <div class="unlock-row" style="margin-top:12px">
+            <div class="field">
+              <label>Base64 Signature of Nonce</label>
+              <input id="sig" placeholder="Paste base64(Ed25519 signature)…"/>
+            </div>
+            <button class="btn-primary" id="admin_unlock" style="height:38px">🔓 Unlock</button>
+          </div>
+          <div id="admin_out" class="output-box" style="margin-top:12px;display:none"></div>
+        </div>
+      </div>
+
+      <!-- ── CONSENT panel ──────────────── -->
+      <div class="panel" id="panel-consent">
+        <div class="card">
+          <div class="card-title"><span>🤝</span> Request User Consent</div>
+          <div class="form-row">
+            <div class="field"><label>User ID</label><input id="c_user" placeholder="user id"/></div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="btn-primary" id="req_consent">📩 Request Consent</button>
+            </div>
+          </div>
+          <div class="output-box" id="consent_out" style="margin-top:14px">
+            <span class="output-empty">Click "Request Consent" to start…</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>✅</span> Verify &amp; Authorize</div>
+          <div class="form-row">
+            <div class="field"><label>Consent Nonce</label><input id="consent_nonce" placeholder="from request above"/></div>
+            <div class="field"><label>User Signature (base64)</label><input id="user_sig" placeholder="base64(sig)"/></div>
+          </div>
+          <div class="field" style="margin-top:12px">
+            <label>User Public Key (base64)</label>
+            <input id="user_pub" placeholder="base64(ed25519 pubkey)"/>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn-success" id="verify_consent">✅ Verify &amp; Authorize</button>
+          </div>
+          <div class="output-box" id="verify_out" style="margin-top:12px;display:none"></div>
+        </div>
+      </div>
+
+      <!-- ── LOGS panel ─────────────────── -->
+      <div class="panel" id="panel-logs">
+        <div class="card">
+          <div class="card-title"><span>➕</span> Append Event</div>
+          <div style="display:flex;gap:10px">
+            <input id="log_event" placeholder="Describe the event…" style="flex:1"/>
+            <button class="btn-primary" id="append_log">➕ Append</button>
+            <button id="log_head">🔗 Head Hash</button>
+          </div>
+          <div class="output-box" id="log_out" style="margin-top:12px;display:none"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>📋</span> Recent Log Entries</div>
+          <div class="table-wrap">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Timestamp</th>
+                  <th>Event</th>
+                  <th>Prev Hash</th>
+                  <th>Curr Hash</th>
+                </tr>
+              </thead>
+              <tbody id="log-table-body">
+                <tr><td colspan="5" style="color:var(--text-muted);text-align:center;padding:20px">
+                  No log entries yet
+                </td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:12px">
+            <button id="refresh-logs" class="btn-sm">🔄 Refresh Logs</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS panel ─────────────── -->
+      <div class="panel" id="panel-settings">
+        <div class="card">
+          <div class="card-title"><span>⚙️</span> Answer Style</div>
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px">
+            Choose the default style used to format interview answers.
+          </p>
+          <div class="form-row" style="max-width:420px">
+            <div class="field">
+              <label>Style</label>
+              <select id="style">
+                <option value="STAR">STAR — Situation, Task, Action, Result</option>
+                <option value="QUANT">Quant Bullets — metric-focused</option>
+                <option value="HYBRID">Hybrid — STAR + quantified bullets</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="btn-primary" id="save_style">💾 Save Style</button>
+            </div>
+          </div>
+          <div id="style_out" class="output-box" style="margin-top:14px;display:none"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>🔑</span> Unlock Profile</div>
+          <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px">
+            Verify passphrase to unlock a profile's private signing key.
+          </p>
+          <div class="form-row">
+            <div class="field"><label>User ID</label><input id="unlock-uid" placeholder="user id"/></div>
+            <div class="field"><label>Passphrase</label><input id="unlock-pw" type="password" placeholder="passphrase"/></div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn-primary" id="unlock-btn">🔑 Unlock Profile</button>
+          </div>
+          <div id="unlock_out" class="output-box" style="margin-top:12px;display:none"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span>ℹ️</span> About</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+            <div><span style="color:var(--text-muted)">App</span><br/><strong>PromptPilot</strong></div>
+            <div><span style="color:var(--text-muted)">Version</span><br/><strong>1.1.0</strong></div>
+            <div><span style="color:var(--text-muted)">By</span><br/><strong>Next Problem?</strong></div>
+            <div><span style="color:var(--text-muted)">Backend</span><br/><strong>Tauri v2 + Rust</strong></div>
+            <div><span style="color:var(--text-muted)">Crypto</span><br/><strong>Ed25519 + XChaCha20-Poly1305</strong></div>
+            <div><span style="color:var(--text-muted)">Storage</span><br/><strong>SQLite (local)</strong></div>
+          </div>
+          <div style="margin-top:16px">
+            <a href="assets/brand.html" target="_blank"
+               style="color:var(--accent);font-size:13px;text-decoration:none">
+              🎬 View installer animation →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- #content -->
+  </div><!-- #main -->
+</div><!-- #app -->
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Rust / Cargo build output
+src-tauri/target/
+
+# Tauri generated
+src-tauri/gen/
+
+# Distribution
+dist/
+
+# Environment & secrets
+.env
+.env.local
+*.pem
+*.key
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+.idea/
+*.suo
+*.user

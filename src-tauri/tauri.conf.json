@@ -1,0 +1,50 @@
+{
+  "productName": "PromptPilot",
+  "version": "1.1.0",
+  "identifier": "com.nextproblem.promptpilot",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "../src",
+    "distDir": "../src"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "PromptPilot — Next Problem?",
+        "width": 1280,
+        "height": 860,
+        "minWidth": 900,
+        "minHeight": 600,
+        "resizable": true,
+        "center": true
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "msi",
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "category": "Productivity",
+    "copyright": "© 2025 Next Problem?",
+    "shortDescription": "Secure, privacy-first interview prep and prompt management desktop app",
+    "longDescription": "PromptPilot gives you a curated interview prompt library, per-user Ed25519 keypairs, consent-gated admin mode, and a hash-chained audit log — all running locally with no cloud dependencies.",
+    "publisher": "Next Problem?",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  },
+  "security": {
+    "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' http://localhost ws://localhost"
+  }
+}

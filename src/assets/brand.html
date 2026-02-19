@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>PromptPilot — Next Problem?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #020817;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .scene {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            animation: fadeIn .6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Logo mark ── */
+        .logo-mark {
+            width: 100px;
+            height: 100px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 0 60px rgba(99, 102, 241, .55), 0 0 120px rgba(99, 102, 241, .2);
+            animation: glow-pulse 2.5s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes glow-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 60px rgba(99, 102, 241, .55), 0 0 120px rgba(99, 102, 241, .2);
+            }
+
+            50% {
+                box-shadow: 0 0 90px rgba(139, 92, 246, .75), 0 0 180px rgba(99, 102, 241, .3);
+            }
+        }
+
+        /* ── Orbit ring ── */
+        .orbit-ring {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 1px solid rgba(99, 102, 241, .35);
+            animation: orbit-spin 4s linear infinite;
+            pointer-events: none;
+        }
+
+        .orbit-ring::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6366f1;
+            box-shadow: 0 0 8px #6366f1;
+        }
+
+        @keyframes orbit-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Text ── */
+        .brand-name {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #a5b4fc, #e879f9, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            animation: shimmer 3s linear infinite;
+            background-size: 200% auto;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .brand-sub {
+            font-size: 14px;
+            color: #64748b;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            margin-top: -18px;
+        }
+
+        /* ── Progress bar ── */
+        .progress-wrap {
+            width: 260px;
+            height: 3px;
+            background: rgba(255, 255, 255, .06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #22d3ee);
+            border-radius: 2px;
+            animation: progress-fill 2.2s cubic-bezier(.4, 0, .2, 1) forwards;
+        }
+
+        @keyframes progress-fill {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .loading-text {
+            font-size: 12px;
+            color: #475569;
+            letter-spacing: .5px;
+            animation: blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: .35;
+            }
+        }
+
+        /* ── Particle dots ── */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, .5);
+            animation: float-up var(--dur, 5s) ease-in var(--delay, 0s) infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="scene">
+        <div class="logo-mark">
+            🧭
+            <div class="orbit-ring"></div>
+        </div>
+        <div>
+            <div class="brand-name">PromptPilot</div>
+            <div class="brand-sub">by Next Problem?</div>
+        </div>
+        <div>
+            <div class="progress-wrap">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+        <div class="loading-text">Initialising secure session…</div>
+    </div>
+
+    <script>
+        const ps = document.getElementById('particles')
+        for (let i = 0; i < 22; i++) {
+            const p = document.createElement('div')
+            p.className = 'particle'
+            p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      --dur: ${4 + Math.random() * 5}s;
+      --delay: ${Math.random() * 5}s;
+      width: ${1 + Math.random() * 3}px;
+      height: ${1 + Math.random() * 3}px;
+      opacity: ${.3 + Math.random() * .7};
+    `
+            ps.appendChild(p)
+        }
+    </script>
+</body>
+
+</html>
