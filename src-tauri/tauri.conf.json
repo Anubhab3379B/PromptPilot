@@ -1,6 +1,6 @@
 {
   "productName": "PromptPilot",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "identifier": "com.nextproblem.promptpilot",
   "build": {
     "beforeDevCommand": "",
@@ -9,13 +9,14 @@
     "distDir": "../src"
   },
   "app": {
+    "withGlobalTauri": true,
     "windows": [
       {
         "title": "PromptPilot — Next Problem?",
-        "width": 1280,
-        "height": 860,
-        "minWidth": 900,
-        "minHeight": 600,
+        "width": 1380,
+        "height": 900,
+        "minWidth": 960,
+        "minHeight": 640,
         "resizable": true,
         "center": true
       }
@@ -35,8 +36,8 @@
     ],
     "category": "Productivity",
     "copyright": "© 2025 Next Problem?",
-    "shortDescription": "Secure, privacy-first interview prep and prompt management desktop app",
-    "longDescription": "PromptPilot gives you a curated interview prompt library, per-user Ed25519 keypairs, consent-gated admin mode, and a hash-chained audit log — all running locally with no cloud dependencies.",
+    "shortDescription": "Secure, privacy-first AI interview prep desktop app",
+    "longDescription": "PromptPilot gives you a curated interview prompt library, RAG-powered AI coach, per-user Ed25519 keypairs, consent-gated admin mode, and a hash-chained audit log — all running locally with no cloud dependencies.",
     "publisher": "Next Problem?",
     "windows": {
       "certificateThumbprint": null,
@@ -45,6 +46,6 @@
     }
   },
   "security": {
-    "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' http://localhost ws://localhost"
+    "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self' http://localhost ws://localhost http://127.0.0.1:11434"
   }
 }
