@@ -55,18 +55,6 @@ The workflow builds the MSI + NSIS installers and uploads them as a GitHub Relea
 
 ---
 
-## 🔐 Admin Setup
-
-1. Generate an Ed25519 keypair:
-   ```bash
-   openssl genpkey -algorithm ed25519 -out admin_private.pem
-   openssl pkey -in admin_private.pem -pubout -out admin_public.pem
-   ```
-2. Place `admin_public.pem` in the app resources directory (`src-tauri/resources/`)
-3. To unlock admin mode: click **Get Nonce**, sign it with `admin_private.pem`, paste the base64 signature
-
----
-
 ## 🏗️ Architecture
 
 ```
