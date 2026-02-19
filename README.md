@@ -18,7 +18,6 @@
 |---|---|
 | 💡 **Prompt Library** | 9 built-in templates across Behavioural, Technical, Leadership & Product Sense categories |
 | 👤 **Secure User Profiles** | Per-user Ed25519 keypairs, private keys encrypted at rest (XChaCha20-Poly1305) |
-| 🔐 **Admin Mode** | Public-key nonce challenge — no backdoors, no hardcoded secrets |
 | 🤝 **Consent Flows** | Users sign nonces to authorize admin actions |
 | 📋 **Audit Log** | Hash-chained append-only log stored in SQLite |
 | ⚙️ **Answer Style** | STAR / Quant Bullets / Hybrid — persisted across sessions |
